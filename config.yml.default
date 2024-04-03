@@ -1,0 +1,13 @@
+# template config
+templates: 
+  java_template: "../../templates/gitlab-ci-java.go.tmpl"
+  
+# teamcity config
+teamcity:
+  data_dir: "../../xml"
+
+# gitlab config
+gitlab:
+  pipeline_output_dir: "../../output"
+
+
