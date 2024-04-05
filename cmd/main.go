@@ -38,6 +38,11 @@ func main() {
 		log.Fatalf("Error reading input directory: %v", err)
 	}
 
+	err = os.MkdirAll(config.GitLab.PipelineOutputDir, 0755)
+	if err != nil {
+		log.Fatalf("Error creating output directory: %v", err)
+	}
+
 	for _, file := range files {
 		if file.IsDir() || !strings.HasSuffix(file.Name(), ".xml") {
 			continue
