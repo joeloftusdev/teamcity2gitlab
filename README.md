@@ -16,7 +16,7 @@ To run the app:
 
 
 ````
-cd cmd/app
+cd cmd
 go run .
 ````
 

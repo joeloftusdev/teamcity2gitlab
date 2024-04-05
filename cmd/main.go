@@ -1,6 +1,7 @@
 package main
 
 import (
+	"gopkg.in/yaml.v2"
 	"log"
 	"os"
 	"path/filepath"
@@ -8,12 +9,31 @@ import (
 	"teamcity2gitlab/pkg/convert"
 )
 
-func main() {
+type Config struct {
+	Templates struct {
+		JavaTemplate string `yaml:"java_template"`
+	} `yaml:"templates"`
+	TeamCity struct {
+		DataDir string `yaml:"data_dir"`
+	} `yaml:"teamcity"`
+	GitLab struct {
+		PipelineOutputDir string `yaml:"pipeline_output_dir"`
+	} `yaml:"gitlab"`
+}
 
-	inputDir := "../../xml"
-	outputDir := "../../output"
-	templateFile := "../../templates/gitlab-ci-java.go.tmpl"
-	files, err := os.ReadDir(inputDir)
+func main() {
+	configFile, err := os.ReadFile("../config.yml")
+	if err != nil {
+		log.Fatalf("Error reading config file: %v", err)
+	}
+
+	var config Config
+	err = yaml.Unmarshal(configFile, &config)
+	if err != nil {
+		log.Fatalf("Error parsing config file: %v", err)
+	}
+
+	files, err := os.ReadDir(config.TeamCity.DataDir)
 	if err != nil {
 		log.Fatalf("Error reading input directory: %v", err)
 	}
@@ -23,10 +43,10 @@ func main() {
 			continue
 		}
 
-		inputFile := filepath.Join(inputDir, file.Name())
-		outputFile := filepath.Join(outputDir, strings.TrimSuffix(file.Name(), filepath.Ext(file.Name()))+".yml")
+		inputFile := filepath.Join(config.TeamCity.DataDir, file.Name())
+		outputFile := filepath.Join(config.GitLab.PipelineOutputDir, strings.TrimSuffix(file.Name(), filepath.Ext(file.Name()))+".yml")
 
-		convert.Convert(inputFile, outputFile, templateFile)
+		convert.Convert(inputFile, outputFile, config.Templates.JavaTemplate)
 
 		log.Printf("Conversion completed. GitLab pipeline YAML data written to %s", outputFile)
 	}
