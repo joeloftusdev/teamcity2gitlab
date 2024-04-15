@@ -24,7 +24,18 @@ cd cmd
 go run .
 ````
 
+
 ## Info
 Currently this app supports a simple build configuration using Maven & SimpleRunner build steps. 
 
 I'll be adding templates for other languages & build tools in the future.
+
+## Experimental
+
+I have created a test environment/lab containing a Gitlab server & runner plus a TeamCity server & agent. 
+
+You can read more about this [here](/lab/lab.md).
+
+You will need a Docker environment set up running locally including Docker compose.
+
+
