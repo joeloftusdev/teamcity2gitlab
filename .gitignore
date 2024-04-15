@@ -1,2 +1,5 @@
 output
 config.yml
+lab/gitlab/gitlab-root-password.txt
+lab/gitlab/runner-config
+lab/teamcity/teamcity-auth-token.txt

@@ -1,0 +1,37 @@
+services:
+  teamcity-server:
+    image: 'jetbrains/teamcity-server:2019.2.1'
+    restart: always
+    hostname: 'teamcity-server'
+    container_name: teamcity-server
+    ports:
+      - '8111:8111'
+    volumes:
+      - 'teamcity_data:/data/teamcity_server/datadir'
+      - 'teamcity_logs:/opt/teamcity/logs'
+    networks:
+      - teamcity
+
+  teamcity-agent:
+    image: 'jetbrains/teamcity-agent:2019.2.1'
+    container_name: teamcity-server-agent    
+    restart: always
+    depends_on:
+      - teamcity-server
+    environment:
+      - SERVER_URL=http://teamcity-server:8111
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - 'teamcity_agent_config:/data/teamcity_agent/conf'
+    networks:
+      - teamcity
+
+networks:
+  teamcity:
+    name: gitlab-network
+    external: true
+
+volumes:
+  teamcity_data: {}
+  teamcity_logs: {}
+  teamcity_agent_config: {}

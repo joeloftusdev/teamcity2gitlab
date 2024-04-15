@@ -1,0 +1,36 @@
+services:
+  gitlab-ce:
+    image: 'gitlab/gitlab-ce:latest'
+    restart: always
+    hostname: 'gitlab-ce'
+    container_name: gitlab-ce
+    ports:
+      - '8080:80'
+      - '8443:443'
+    volumes:
+      - 'gitlab_lab_config:/etc/gitlab'
+      - 'gitlab_lab_logs:/var/log/gitlab'
+      - 'gitlab_lab_data:/var/opt/gitlab'
+    networks:
+      - gitlab
+  gitlab-runner:
+    image: gitlab/gitlab-runner:alpine
+    container_name: gitlab-lab-runner    
+    restart: always
+    depends_on:
+      - gitlab-ce
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - 'gitlab_runner_lab_config:/etc/gitlab-runner'
+    networks:
+      - gitlab
+
+networks:
+  gitlab:
+    name: gitlab-network
+
+volumes:
+  gitlab_lab_data: {}
+  gitlab_lab_config: {}
+  gitlab_lab_logs: {}
+  gitlab_runner_lab_config: {}
