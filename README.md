@@ -7,6 +7,10 @@
 Simple utility that converts a TeamCity build configuration XML document into a GitLab pipeline .yml file.
 
 It loads a set of user defined templates from a location defined in a configuration file `config.yml` & uses them to transform between the two formats.
+## Design
+
+![design](https://github.com/joeloftusdev/teamcity2gitlab/assets/152509645/7bc67d06-9e65-4539-b46c-b0b91fedef55)
+
 ## Build & Run
  Rename `config.yml.default` to `config.yml` & specify the location of your TeamCity config data directory plus your output directory for GitLab pipelines.
 
